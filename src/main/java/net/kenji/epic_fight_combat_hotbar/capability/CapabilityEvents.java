@@ -1,4 +1,4 @@
-package net.kenji.epic_fight_combat_hotbar.events;
+package net.kenji.epic_fight_combat_hotbar.capability;
 
 import net.kenji.epic_fight_combat_hotbar.EpicFightCombatHotbar;
 import net.kenji.epic_fight_combat_hotbar.capability.CombatHotbarProvider;
