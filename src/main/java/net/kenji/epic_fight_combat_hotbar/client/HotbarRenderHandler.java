@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -47,34 +48,31 @@ public class HotbarRenderHandler {
         int slots = 4;
 
         // Center the 4-slot hotbar
-        // Vanilla centers 9 slots at screenWidth/2 - 91
-        // 9 slots = 182 width, 4 slots = roughly 80 width
         int x = (screenWidth / 2) - 40; // Adjusted for 4 slots
         int y = screenHeight - 22;
+
+        Player player = mc.player;
+        if (player == null) return;
 
         RenderSystem.enableBlend();
 
         // First pass: Draw all unselected slots
         for (int i = 0; i < slots; i++) {
-
-
-            int slotX = x + (i * 20);
+            int slotX = x + (i * 22);
             int slotY = y;
 
-            // Unselected slot: 23x22 at UV (0, 0)
-            graphics.blit(WIDGETS_LOCATION, slotX, slotY, 1, 1, 20, 20);
+            // Unselected slot: 20x20 at UV (1, 1)
+            graphics.blit(WIDGETS_LOCATION, slotX, slotY, 24, 23, 22, 22);
 
             ItemStack stack = handler.getStackInSlot(i);
-            if (!stack.isEmpty()) {
-                if (i == selectedSlot) continue;
-                graphics.renderItem(stack, slotX + 3, slotY + 3);
-                graphics.renderItemDecorations(mc.font, stack, slotX + 3, slotY + 3);
+            if (!stack.isEmpty() && i != selectedSlot) {
+                renderSlot(graphics, slotX + 3, slotY + 3, Minecraft.getInstance().getPartialTick(), player, stack, i);
             }
         }
 
         // Second pass: Draw selected slot on top
         if (selectedSlot >= 0 && selectedSlot < slots) {
-            int slotX = x + (selectedSlot * 20) - 1;
+            int slotX = x + (selectedSlot * 22) - 1;
             int slotY = y - 1;
 
             // Selected slot: 24x24 at UV (0, 22) - note it's 1px larger on all sides
@@ -82,12 +80,31 @@ public class HotbarRenderHandler {
 
             ItemStack stack = handler.getStackInSlot(selectedSlot);
             if (!stack.isEmpty()) {
-                graphics.renderItem(stack, slotX + 4, slotY + 4);
-                graphics.renderItemDecorations(mc.font, stack, slotX + 4, slotY + 4);
+                renderSlot(graphics, slotX + 4, slotY + 4, Minecraft.getInstance().getPartialTick(), player, stack, selectedSlot);
             }
         }
 
         RenderSystem.disableBlend();
+    }
+
+    private static void renderSlot(GuiGraphics pGuiGraphics, int pX, int pY, float pPartialTick, Player pPlayer, ItemStack pStack, int pSeed) {
+        if (!pStack.isEmpty()) {
+            float f = (float)pStack.getPopTime() - pPartialTick;
+            if (f > 0.0F) {
+                float f1 = 1.0F + f / 5.0F;
+                pGuiGraphics.pose().pushPose();
+                pGuiGraphics.pose().translate((float)(pX + 8), (float)(pY + 12), 0.0F);
+                pGuiGraphics.pose().scale(1.0F / f1, (f1 + 1.0F) / 2.0F, 1.0F);
+                pGuiGraphics.pose().translate((float)(-(pX + 8)), (float)(-(pY + 12)), 0.0F);
+            }
+
+            pGuiGraphics.renderItem(pPlayer, pStack, pX, pY, pSeed);
+            if (f > 0.0F) {
+                pGuiGraphics.pose().popPose();
+            }
+
+            pGuiGraphics.renderItemDecorations(Minecraft.getInstance().font, pStack, pX, pY);
+        }
     }
     public static int getSelectedSlot() {
         return selectedSlot;
