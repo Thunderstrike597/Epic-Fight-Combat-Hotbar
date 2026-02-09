@@ -11,7 +11,9 @@
   ],
   "client": [
     "InventoryScreenMixin",
-    "InventoryScreenAccessor"
+    "InventoryScreenAccessor",
+    "GuiAccessor",
+    "HotbarMixin"
   ],
   "injectors": {
     "defaultRequire": 1
