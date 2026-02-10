@@ -13,7 +13,9 @@
     "InventoryScreenMixin",
     "InventoryScreenAccessor",
     "GuiAccessor",
-    "HotbarMixin"
+    "GuiMixin",
+    "GuiGraphicsMixin",
+    "AbstractContainerScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
