@@ -24,7 +24,7 @@ public class GuiMixin {
         Player player = Minecraft.getInstance().player;
 
         if(player == null) return;
-        if(!CombatModeHandler.isInBattleMode()) return;
+        if(!CombatModeHandler.isInBattleMode(player)) return;
         ci.cancel();
         Gui gui = (Gui)(Object)this;
 
