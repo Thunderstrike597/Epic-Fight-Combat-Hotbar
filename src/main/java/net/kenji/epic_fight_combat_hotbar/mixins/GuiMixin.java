@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
-public class HotbarMixin {
+public class GuiMixin {
 
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
     private void renderHotbarCombatHotbar(float pPartialTick, GuiGraphics pGuiGraphics, CallbackInfo ci){
