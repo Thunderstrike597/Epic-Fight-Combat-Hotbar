@@ -19,7 +19,7 @@ public class CombatModeHandler {
         // Get Epic Fight's player capability
         return player.getCapability(EpicFightCapabilities.CAPABILITY_ENTITY).map(entityPatch -> {
             if (entityPatch instanceof PlayerPatch<?> playerPatch) {
-                return playerPatch.isBattleMode();
+                return playerPatch.isEpicFightMode();
             }
             return false;
         }).orElse(false);
