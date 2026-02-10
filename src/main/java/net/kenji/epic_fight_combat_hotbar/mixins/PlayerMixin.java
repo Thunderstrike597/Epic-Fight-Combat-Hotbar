@@ -27,7 +27,7 @@ public class PlayerMixin {
     private void getCombatHotbarItem(EquipmentSlot equipmentSlot, CallbackInfoReturnable<ItemStack> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object)this;
         if(livingEntity instanceof Player player) {
-            if (!CombatModeHandler.isInBattleMode()) {
+            if (!CombatModeHandler.isInBattleMode(player)) {
                 return;
             }
             player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {

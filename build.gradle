@@ -210,7 +210,7 @@ tasks.named('jar', Jar).configure {
         ])
     }
 
-    archiveBaseName = "${epic_fight_version}-CombatHotbar-Forge"
+    archiveBaseName = "EFM-${epic_fight_version}-CombatHotbar-Forge"
 
     // Don't reobfuscate - keep it deobfuscated for dev use
     // Comment out or remove this line:
@@ -233,7 +233,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'net.kenji'
-            artifactId = 'epic_fight_combat_hotbar-20_14_4'
+            artifactId = 'epic_fight_combat_hotbar-efm-20-14-4'
             version = '1.0.0'
 
             from components.java  // This includes the main jar + sources jar
