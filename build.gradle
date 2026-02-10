@@ -214,7 +214,7 @@ tasks.named('jar', Jar).configure {
 
     // Don't reobfuscate - keep it deobfuscated for dev use
     // Comment out or remove this line:
-    // finalizedBy 'reobfJar'
+     finalizedBy 'reobfJar'
 }
 
 // Separate task for production (obfuscated) jar
