@@ -27,7 +27,7 @@ public class InventoryScreenMixin {
         // These coordinates are RELATIVE to the screen's leftPos/topPos
         // They should match the slot positions: 180, 20
         int slotX = leftPos - 20;
-        int slotY = topPos + 20;
+        int slotY = topPos + 26;
 
         // Draw slot backgrounds
         for (int i = 0; i < 4; i++) {

@@ -28,7 +28,7 @@ public class InventoryMixin {
                     InventoryMenu menu = (InventoryMenu)(Object)this;
 
                     int startX = -19;
-                    int startY = 21;
+                    int startY = 27;
 
                     // Get the current slot count BEFORE adding new slots
                     int startIndex = menu.slots.size();
