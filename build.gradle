@@ -161,7 +161,7 @@ dependencies {
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
    // implementation fg.deobf("curse.maven:ydms-weapon-master-608235:5022313")
-    implementation fg.deobf("curse.maven:epic-fight-mod-405076:7584041")
+    implementation fg.deobf("curse.maven:epic-fight-mod-405076:7345468")
     implementation fg.deobf("curse.maven:corpse-316582:7018272")
     //implementation fg.deobf("curse.maven:item-borders-513769:5903326")    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
