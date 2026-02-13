@@ -32,8 +32,7 @@ public class HotbarInputHandler {
                    int slot = key - GLFW.GLFW_KEY_1; // Convert to 0-3
                    HotbarRenderHandler.setSelectedSlot(slot);
 
-                   // Sync to server (you'll need to create this packet)
-                   // NetworkHandler.sendToServer(new SetCombatSlotPacket(slot));
+
                }
            }
        }

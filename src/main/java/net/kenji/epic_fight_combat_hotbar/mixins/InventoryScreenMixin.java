@@ -1,13 +1,8 @@
 package net.kenji.epic_fight_combat_hotbar.mixins;
 
-import net.kenji.epic_fight_combat_hotbar.EpicFightCombatHotbar;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,10 +19,9 @@ public class InventoryScreenMixin {
         InventoryScreen screen = (InventoryScreen) (Object) this;
         int leftPos = ((InventoryScreenAccessor) screen).getLeftPos();
         int topPos = ((InventoryScreenAccessor) screen).getTopPos();
-        // These coordinates are RELATIVE to the screen's leftPos/topPos
-        // They should match the slot positions: 180, 20
+
         int slotX = leftPos - 20;
-        int slotY = topPos + 20;
+        int slotY = topPos + 26;
 
         // Draw slot backgrounds
         for (int i = 0; i < 4; i++) {

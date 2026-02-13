@@ -10,4 +10,5 @@ public interface AbstractContainerMenuInvoker {
 
     @Invoker("addSlot")
     Slot epic_fight_combat_hotbar$addSlot(Slot slot);
+
 }
