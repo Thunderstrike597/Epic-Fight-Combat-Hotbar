@@ -49,7 +49,14 @@ public class GuiGraphicsMixin {
     public void cancelTooltipRender(Font pFont, ItemStack pStack, int pMouseX, int pMouseY, CallbackInfo ci){
         epicFight_CombatHotbar_Versions$cancelCreativeRender(pStack, ci);
     }
-
+    @Inject(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At("HEAD"), cancellable = true)
+    public void cancelDecorRender(Font pFont, ItemStack pStack, int pMouseX, int pMouseY, CallbackInfo ci){
+        epicFight_CombatHotbar_Versions$cancelCreativeRender(pStack, ci);
+    }
+    @Inject(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At("HEAD"), cancellable = true)
+    public void cancelDecorRender(Font pFont, ItemStack pStack, int pX, int pY, String pText, CallbackInfo ci){
+        epicFight_CombatHotbar_Versions$cancelCreativeRender(pStack, ci);
+    }
     @Unique
     private void epicFight_CombatHotbar_Versions$cancelCreativeRender(ItemStack pStack, CallbackInfo ci){
         Minecraft mc = Minecraft.getInstance();

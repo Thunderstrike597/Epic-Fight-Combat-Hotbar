@@ -24,6 +24,7 @@ public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializab
             return stack.getItem() instanceof SwordItem ||
                     stack.getItem() instanceof ProjectileWeaponItem;
         }
+
     };
 
     private final LazyOptional<ItemStackHandler> optional = LazyOptional.of(() -> inventory);

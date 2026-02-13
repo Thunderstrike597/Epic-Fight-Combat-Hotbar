@@ -7,15 +7,17 @@
   "mixins": [
     "InventoryMixin",
     "AbstractContainerMenuInvoker",
-    "PlayerMixin"
+    "PlayerMixin",
+    "ChestMenuMixin"
   ],
   "client": [
     "InventoryScreenMixin",
     "InventoryScreenAccessor",
     "GuiAccessor",
     "GuiMixin",
+    "AbstractContainerScreenMixin",
     "GuiGraphicsMixin",
-    "AbstractContainerScreenMixin"
+    "ContainerScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
