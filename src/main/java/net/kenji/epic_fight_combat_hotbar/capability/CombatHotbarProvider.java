@@ -2,9 +2,7 @@ package net.kenji.epic_fight_combat_hotbar.capability;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ProjectileWeaponItem;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -21,10 +19,8 @@ public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializab
     private final ItemStackHandler inventory = new ItemStackHandler(SLOTS) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return stack.getItem() instanceof SwordItem ||
-                    stack.getItem() instanceof ProjectileWeaponItem;
+            return stack.getItem() instanceof TieredItem && !(stack.getItem() instanceof Equipable) || stack.getItem() instanceof ProjectileWeaponItem;
         }
-
     };
 
     private final LazyOptional<ItemStackHandler> optional = LazyOptional.of(() -> inventory);
