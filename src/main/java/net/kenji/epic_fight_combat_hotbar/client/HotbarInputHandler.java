@@ -3,6 +3,8 @@ package net.kenji.epic_fight_combat_hotbar.client;
 import de.maxhenkel.corpse.corelib.helpers.Pair;
 import net.kenji.epic_fight_combat_hotbar.EpicFightCombatHotbar;
 import net.kenji.epic_fight_combat_hotbar.capability.CombatHotbarProvider;
+import net.kenji.epic_fight_combat_hotbar.network.CombatHotbarPacketHandler;
+import net.kenji.epic_fight_combat_hotbar.network.HotbarSelectSlotPacket;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,7 +38,7 @@ public class HotbarInputHandler {
            for(Pair<KeyMapping, Integer> key : keys) {
                if (key.getKey().isDown()) {
                    int slot = key.getValue();
-                   HotbarSlotHandler.setSelectedSlot(slot);
+                   HotbarSlotHandler.setSelectedSlotSynchronised(mc.player, slot);
                }
            }
        }
@@ -56,7 +58,7 @@ public class HotbarInputHandler {
             }
 
             double scrollDelta = event.getScrollDelta();
-            int currentSlot = HotbarSlotHandler.getSelectedSlot();
+            int currentSlot = HotbarSlotHandler.getSelectedSlot(mc.player);
 
             if (scrollDelta > 0) {
                 // Scroll up - previous slot
@@ -68,7 +70,7 @@ public class HotbarInputHandler {
                 if (currentSlot > 3) currentSlot = 0;
             }
 
-            HotbarSlotHandler.setSelectedSlot(currentSlot);
+            HotbarSlotHandler.setSelectedSlotSynchronised(mc.player, currentSlot);
 
             // Cancel the event so vanilla hotbar doesn't scroll
             event.setCanceled(true);
