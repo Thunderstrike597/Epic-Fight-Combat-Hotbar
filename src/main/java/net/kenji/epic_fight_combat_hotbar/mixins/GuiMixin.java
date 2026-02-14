@@ -3,7 +3,7 @@ package net.kenji.epic_fight_combat_hotbar.mixins;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.kenji.epic_fight_combat_hotbar.capability.ModCapabilities;
 import net.kenji.epic_fight_combat_hotbar.client.CombatModeHandler;
-import net.kenji.epic_fight_combat_hotbar.client.HotbarRenderHandler;
+import net.kenji.epic_fight_combat_hotbar.client.HotbarSlotHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -38,7 +38,7 @@ public class GuiMixin {
         int screenWidth = mc.getWindow().getGuiScaledWidth();
         int screenHeight = mc.getWindow().getGuiScaledHeight();
 
-        int selectedSlot = HotbarRenderHandler.getSelectedSlot();
+        int selectedSlot = HotbarSlotHandler.getSelectedSlot();
         ResourceLocation WIDGETS_LOCATION = new ResourceLocation("textures/gui/widgets.png");
 
         int slots = 4;

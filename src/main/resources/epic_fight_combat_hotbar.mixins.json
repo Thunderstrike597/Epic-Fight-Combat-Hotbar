@@ -17,7 +17,8 @@
     "GuiMixin",
     "AbstractContainerScreenMixin",
     "GuiGraphicsMixin",
-    "ContainerScreenMixin"
+    "ContainerScreenMixin",
+    "MinecraftKeyMixin"
   ],
   "injectors": {
     "defaultRequire": 1

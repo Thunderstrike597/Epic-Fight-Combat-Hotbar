@@ -2,7 +2,7 @@ package net.kenji.epic_fight_combat_hotbar.mixins;
 
 import net.kenji.epic_fight_combat_hotbar.capability.ModCapabilities;
 import net.kenji.epic_fight_combat_hotbar.client.CombatModeHandler;
-import net.kenji.epic_fight_combat_hotbar.client.HotbarRenderHandler;
+import net.kenji.epic_fight_combat_hotbar.client.HotbarSlotHandler;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
@@ -30,7 +30,7 @@ public abstract class PlayerMixin {
                 return;
             }
             player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
-                int selectedSlot = HotbarRenderHandler.getSelectedSlot();
+                int selectedSlot = HotbarSlotHandler.getSelectedSlot();
                 ItemStack stack = handler.getStackInSlot(selectedSlot);
                 if(equipmentSlot == EquipmentSlot.MAINHAND) {
                         cir.setReturnValue(stack);
@@ -48,7 +48,7 @@ public abstract class PlayerMixin {
         // In combat mode, prevent vanilla from setting the mainhand
         // Instead, sync to our combat hotbar
         player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
-            int selectedSlot = HotbarRenderHandler.getSelectedSlot();
+            int selectedSlot = HotbarSlotHandler.getSelectedSlot();
             handler.setStackInSlot(selectedSlot, pStack.copy());
         });
 

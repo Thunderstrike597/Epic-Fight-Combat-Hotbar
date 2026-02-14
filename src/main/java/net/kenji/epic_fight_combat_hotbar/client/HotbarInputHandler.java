@@ -1,38 +1,42 @@
 package net.kenji.epic_fight_combat_hotbar.client;
 
+import de.maxhenkel.corpse.corelib.helpers.Pair;
 import net.kenji.epic_fight_combat_hotbar.EpicFightCombatHotbar;
+import net.kenji.epic_fight_combat_hotbar.capability.CombatHotbarProvider;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = EpicFightCombatHotbar.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class HotbarInputHandler {
     
     // Handle number key presses
     @SubscribeEvent
-    public static void onKeyInput(InputEvent.Key event) {
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
        if(Minecraft.getInstance().player != null) {
            if (!CombatModeHandler.isInBattleMode(Minecraft.getInstance().player)) {
                return;
            }
-
            Minecraft mc = Minecraft.getInstance();
            if (mc.player == null || mc.screen != null) {
                return;
            }
+           List<Pair<KeyMapping, Integer>> keys = new ArrayList<>();
+           for(int i = 0; i < CombatHotbarProvider.SLOTS; i++) {
+               keys.add(new Pair<>(mc.options.keyHotbarSlots[i], i));
+           }
 
-           // Check if keys 1-4 are pressed
-           if (event.getAction() == GLFW.GLFW_PRESS) {
-               int key = event.getKey();
-
-               if (key >= GLFW.GLFW_KEY_1 && key <= GLFW.GLFW_KEY_4) {
-                   int slot = key - GLFW.GLFW_KEY_1; // Convert to 0-3
-                   HotbarRenderHandler.setSelectedSlot(slot);
-
-
+           for(Pair<KeyMapping, Integer> key : keys) {
+               if (key.getKey().isDown()) {
+                   int slot = key.getValue();
+                   HotbarSlotHandler.setSelectedSlot(slot);
                }
            }
        }
@@ -52,7 +56,7 @@ public class HotbarInputHandler {
             }
 
             double scrollDelta = event.getScrollDelta();
-            int currentSlot = HotbarRenderHandler.getSelectedSlot();
+            int currentSlot = HotbarSlotHandler.getSelectedSlot();
 
             if (scrollDelta > 0) {
                 // Scroll up - previous slot
@@ -64,7 +68,7 @@ public class HotbarInputHandler {
                 if (currentSlot > 3) currentSlot = 0;
             }
 
-            HotbarRenderHandler.setSelectedSlot(currentSlot);
+            HotbarSlotHandler.setSelectedSlot(currentSlot);
 
             // Cancel the event so vanilla hotbar doesn't scroll
             event.setCanceled(true);
