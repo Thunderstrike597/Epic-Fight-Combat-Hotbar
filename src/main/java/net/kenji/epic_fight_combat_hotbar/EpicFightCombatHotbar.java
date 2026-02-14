@@ -1,6 +1,7 @@
 package net.kenji.epic_fight_combat_hotbar;
 
 import com.mojang.logging.LogUtils;
+import net.kenji.epic_fight_combat_hotbar.network.CombatHotbarPacketHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -34,8 +35,8 @@ public class EpicFightCombatHotbar {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-
-      }
+        event.enqueueWork(CombatHotbarPacketHandler::register);
+    }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
