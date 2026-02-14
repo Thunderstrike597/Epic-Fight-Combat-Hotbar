@@ -15,11 +15,19 @@ import yesman.epicfight.world.item.WeaponItem;
 public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
     public static final int SLOTS = 4;
+    public static final String COMBAT_HOTBAR_SLOT_ITEM_TAG = "combat_hotbar_slot_item";
 
     private final ItemStackHandler inventory = new ItemStackHandler(SLOTS) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             return stack.getItem() instanceof TieredItem && !(stack.getItem() instanceof Equipable) || stack.getItem() instanceof ProjectileWeaponItem;
+        }
+        @Override
+        public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+            super.setStackInSlot(slot, stack);
+            if(stack.getTag() != null) {
+                stack.getTag().putInt(COMBAT_HOTBAR_SLOT_ITEM_TAG, slot);
+            }
         }
     };
 

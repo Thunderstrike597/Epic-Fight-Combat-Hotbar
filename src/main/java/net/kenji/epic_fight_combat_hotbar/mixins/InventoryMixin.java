@@ -40,7 +40,6 @@ public class InventoryMixin {
                     }
 
                     // Debug log to verify correct indices
-                    Log.info("Combat hotbar slots added at indices: " + startIndex + " to " + (menu.slots.size() - 1));
                 });
     }
     @Inject(method = "quickMoveStack", at = @At("HEAD"), cancellable = true)
