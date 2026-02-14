@@ -30,7 +30,7 @@ public abstract class PlayerMixin {
                 return;
             }
             player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
-                int selectedSlot = HotbarSlotHandler.getSelectedSlot();
+                int selectedSlot = HotbarSlotHandler.getSelectedSlot(player);
                 ItemStack stack = handler.getStackInSlot(selectedSlot);
                 if(equipmentSlot == EquipmentSlot.MAINHAND) {
                         cir.setReturnValue(stack);
@@ -48,7 +48,7 @@ public abstract class PlayerMixin {
         // In combat mode, prevent vanilla from setting the mainhand
         // Instead, sync to our combat hotbar
         player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
-            int selectedSlot = HotbarSlotHandler.getSelectedSlot();
+            int selectedSlot = HotbarSlotHandler.getSelectedSlot(player);
             handler.setStackInSlot(selectedSlot, pStack.copy());
         });
 

@@ -29,16 +29,16 @@ public class GuiMixin {
         Gui gui = (Gui)(Object)this;
 
         player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
-            epic_fight_combat_hotbar$renderCombatHotbar(pGuiGraphics, handler, Minecraft.getInstance(), gui);
+            epic_fight_combat_hotbar$renderCombatHotbar(pGuiGraphics, handler, Minecraft.getInstance(), player, gui);
         });
     }
 
     @Unique
-    private static void epic_fight_combat_hotbar$renderCombatHotbar(GuiGraphics graphics, net.minecraftforge.items.ItemStackHandler handler, Minecraft mc, Gui gui) {
+    private static void epic_fight_combat_hotbar$renderCombatHotbar(GuiGraphics graphics, net.minecraftforge.items.ItemStackHandler handler, Minecraft mc, Player player,Gui gui) {
         int screenWidth = mc.getWindow().getGuiScaledWidth();
         int screenHeight = mc.getWindow().getGuiScaledHeight();
 
-        int selectedSlot = HotbarSlotHandler.getSelectedSlot();
+        int selectedSlot = HotbarSlotHandler.getSelectedSlot(player);
         ResourceLocation WIDGETS_LOCATION = new ResourceLocation("textures/gui/widgets.png");
 
         int slots = 4;
@@ -46,9 +46,6 @@ public class GuiMixin {
         // Center the 4-slot hotbar
         int x = (screenWidth / 2) - 40; // Adjusted for 4 slots
         int y = screenHeight - 22;
-
-        Player player = mc.player;
-        if (player == null) return;
 
         RenderSystem.enableBlend();
 

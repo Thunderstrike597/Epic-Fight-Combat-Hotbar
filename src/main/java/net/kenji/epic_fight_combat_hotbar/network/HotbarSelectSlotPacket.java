@@ -2,9 +2,9 @@ package net.kenji.epic_fight_combat_hotbar.network;
 
 import net.kenji.epic_fight_combat_hotbar.client.HotbarSlotHandler;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 public class HotbarSelectSlotPacket {
@@ -28,8 +28,9 @@ public class HotbarSelectSlotPacket {
     // Handle: Process the packet on the receiving side
     public static void handle(HotbarSelectSlotPacket packet, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            // This runs on the server thread
-            HotbarSlotHandler.setSelectedSlot(packet.slot);
+            ServerPlayer player = ctx.get().getSender();
+            if(player == null) return;
+            HotbarSlotHandler.setSelectedSlot(player, packet.slot);
         });
         ctx.get().setPacketHandled(true);
     }

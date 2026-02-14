@@ -36,7 +36,7 @@ public class HotbarInputHandler {
            for(Pair<KeyMapping, Integer> key : keys) {
                if (key.getKey().isDown()) {
                    int slot = key.getValue();
-                   HotbarSlotHandler.setSelectedSlot(slot);
+                   HotbarSlotHandler.setSelectedSlotSynchronised(mc.player, slot);
                }
            }
        }
@@ -56,7 +56,7 @@ public class HotbarInputHandler {
             }
 
             double scrollDelta = event.getScrollDelta();
-            int currentSlot = HotbarSlotHandler.getSelectedSlot();
+            int currentSlot = HotbarSlotHandler.getSelectedSlot(mc.player);
 
             if (scrollDelta > 0) {
                 // Scroll up - previous slot
@@ -68,7 +68,7 @@ public class HotbarInputHandler {
                 if (currentSlot > 3) currentSlot = 0;
             }
 
-            HotbarSlotHandler.setSelectedSlot(currentSlot);
+            HotbarSlotHandler.setSelectedSlotSynchronised(mc.player, currentSlot);
 
             // Cancel the event so vanilla hotbar doesn't scroll
             event.setCanceled(true);

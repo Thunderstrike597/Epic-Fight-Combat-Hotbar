@@ -19,7 +19,8 @@ public class InventoryScreenMixin {
         InventoryScreen screen = (InventoryScreen) (Object) this;
         int leftPos = ((InventoryScreenAccessor) screen).getLeftPos();
         int topPos = ((InventoryScreenAccessor) screen).getTopPos();
-
+        // These coordinates are RELATIVE to the screen's leftPos/topPos
+        // They should match the slot positions: 180, 20
         int slotX = leftPos - 20;
         int slotY = topPos + 26;
 

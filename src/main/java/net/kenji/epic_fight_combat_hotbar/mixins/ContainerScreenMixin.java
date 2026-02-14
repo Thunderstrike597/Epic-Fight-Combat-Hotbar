@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ContainerScreenMixin {
     @Unique
     private static final ResourceLocation COMBAT_HOTBAR_SLOTS =
-            ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/container/inventory.png");
+            new ResourceLocation("minecraft", "textures/gui/container/inventory.png");
     @Inject(method = "renderBg", at = @At("TAIL"))
     private void addWeaponSlots(GuiGraphics pGuiGraphics, float par2, int par3, int par4, CallbackInfo ci) {
 
