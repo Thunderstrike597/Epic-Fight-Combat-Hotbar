@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jline.utils.Log;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -39,7 +38,6 @@ public class InventoryMixin {
                     }
 
                     // Debug log to verify correct indices
-                    Log.info("Combat hotbar slots added at indices: " + startIndex + " to " + (menu.slots.size() - 1));
                 });
     }
     @Inject(method = "quickMoveStack", at = @At("HEAD"), cancellable = true)

@@ -12,7 +12,7 @@ public class CombatHotbarPacketHandler {
     private static final String PROTOCOL_VERSION = "1";
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-           ResourceLocation.fromNamespaceAndPath(EpicFightCombatHotbar.MODID, "main"),
+           new ResourceLocation(EpicFightCombatHotbar.MODID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals

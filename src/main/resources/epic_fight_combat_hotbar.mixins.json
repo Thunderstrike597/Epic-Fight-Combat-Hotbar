@@ -2,13 +2,18 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.kenji.epic_fight_combat_hotbar.mixins",
+  "plugin": "net.kenji.epic_fight_combat_hotbar.CompatMixinPlugin",
+
   "compatibilityLevel": "JAVA_17",
   "refmap": "epic_fight_combat_hotbar.refmap.json",
   "mixins": [
     "InventoryMixin",
     "AbstractContainerMenuInvoker",
     "PlayerMixin",
-    "ChestMenuMixin"
+    "ChestMenuMixin",
+    "compat.corpse.CorpseTransferItemsMixin",
+    "compat.corpse.CorpseInventoryContainerInvoker",
+    "compat.corpse.CorpseContainerBaseAccessor"
   ],
   "client": [
     "InventoryScreenMixin",
