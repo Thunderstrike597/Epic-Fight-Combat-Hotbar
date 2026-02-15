@@ -10,19 +10,19 @@
     "InventoryMixin",
     "AbstractContainerMenuInvoker",
     "PlayerMixin",
-    "ChestMenuMixin",
+    "AbstractContainerMenuMixin",
     "compat.corpse.CorpseTransferItemsMixin",
     "compat.corpse.CorpseInventoryContainerInvoker",
     "compat.corpse.CorpseContainerBaseAccessor"
+
   ],
   "client": [
-    "InventoryScreenMixin",
     "InventoryScreenAccessor",
     "GuiAccessor",
     "GuiMixin",
     "AbstractContainerScreenMixin",
+    "InventoryScreenMixin",
     "GuiGraphicsMixin",
-    "ContainerScreenMixin",
     "MinecraftKeyMixin"
   ],
   "injectors": {

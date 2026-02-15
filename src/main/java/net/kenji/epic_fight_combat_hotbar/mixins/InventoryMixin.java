@@ -20,15 +20,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(InventoryMenu.class)
 public class InventoryMixin {
-    @Inject(method = "<init>", at = @At("TAIL"))
+   @Inject(method = "<init>", at = @At("TAIL"))
     private void addWeaponSlots(Inventory inv, boolean active, Player owner, CallbackInfo ci) {
         owner.getCapability(ModCapabilities.COMBAT_HOTBAR)
                 .ifPresent(handler -> {
                     AbstractContainerMenuInvoker invoker = (AbstractContainerMenuInvoker)(Object)this;
                     InventoryMenu menu = (InventoryMenu)(Object)this;
 
-                    int startX = -19;
-                    int startY = 27;
+                    int startX = -18;
+                    int startY = 28;
 
                     // Get the current slot count BEFORE adding new slots
                     int startIndex = menu.slots.size();
