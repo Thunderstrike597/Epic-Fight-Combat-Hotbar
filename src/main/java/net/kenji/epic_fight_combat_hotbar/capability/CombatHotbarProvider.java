@@ -13,6 +13,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 
 public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
@@ -22,7 +24,11 @@ public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializab
     private final ItemStackHandler inventory = new ItemStackHandler(SLOTS) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return stack.getItem() instanceof TieredItem && !(stack.getItem() instanceof Equipable) || stack.getItem() instanceof ProjectileWeaponItem;
+            CapabilityItem capItem = EpicFightCapabilities.getItemStackCapability(stack);
+            if(capItem != null){
+                return capItem.getWeaponCategory() != CapabilityItem.WeaponCategories.NOT_WEAPON && capItem.getWeaponCategory() != CapabilityItem.WeaponCategories.PICKAXE && capItem.getWeaponCategory() != CapabilityItem.WeaponCategories.HOE;
+            }
+            return false;
         }
         @Override
         public void setStackInSlot(int slot, @NotNull ItemStack stack) {

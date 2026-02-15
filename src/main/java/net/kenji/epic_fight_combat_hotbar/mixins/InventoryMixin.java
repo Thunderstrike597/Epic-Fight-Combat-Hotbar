@@ -6,15 +6,18 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TieredItem;
 import net.minecraftforge.items.SlotItemHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 
 @Mixin(InventoryMenu.class)
 public class InventoryMixin {
@@ -52,19 +55,55 @@ public class InventoryMixin {
         ItemStack stackToMove = slot.getItem();
 
         // Only handle weapons
-        if (!(stackToMove.getItem() instanceof SwordItem) &&
-                !(stackToMove.getItem() instanceof ProjectileWeaponItem)) {
-            return;
+        if (!(stackToMove.getItem() instanceof TieredItem) || stackToMove.getItem() instanceof Equipable || !(stackToMove.getItem() instanceof ProjectileWeaponItem)) {
+            if(EpicFightCapabilities.getItemStackCapability(stackToMove) == null) {
+                return;
+            }
+            CapabilityItem capItem = EpicFightCapabilities.getItemStackCapability(stackToMove);
+            if(capItem != null) {
+                if(capItem.getWeaponCategory() == CapabilityItem.WeaponCategories.NOT_WEAPON || capItem.getWeaponCategory() == CapabilityItem.WeaponCategories.PICKAXE || capItem.getWeaponCategory() == CapabilityItem.WeaponCategories.HOE || capItem.getWeaponCategory() == CapabilityItem.WeaponCategories.SHIELD){
+                    return;
+                }
+            }
         }
 
         player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
-            // Try to move to combat hotbar
-            for (int i = 0; i < handler.getSlots(); i++) {
-                ItemStack combatSlot = handler.getStackInSlot(i);
+            int combatHotbarStartIndex = -1;
 
-                if (combatSlot.isEmpty()) {
-                    handler.setStackInSlot(i, stackToMove.copy());
-                    slot.set(ItemStack.EMPTY);
+            // Find where combat hotbar slots start in the menu
+            for (int i = 0; i < menu.slots.size(); i++) {
+                Slot s = menu.slots.get(i);
+                if (s instanceof SlotItemHandler && ((SlotItemHandler)s).getItemHandler() == handler) {
+                    combatHotbarStartIndex = i;
+                    break;
+                }
+            }
+
+            if (combatHotbarStartIndex == -1) return;
+            AbstractContainerMenuInvoker menuInvoker = (AbstractContainerMenuInvoker) menu;
+
+            // Check if we're shift-clicking FROM a combat hotbar slot
+            if (slotIndex >= combatHotbarStartIndex && slotIndex < combatHotbarStartIndex + handler.getSlots()) {
+                // Move FROM combat hotbar TO main inventory
+                // Try hotbar first (slots 36-44 in InventoryMenu), then main inventory (9-35)
+                if (menuInvoker.moveItemStackToInvoker(stackToMove, 36, 45, false) ||
+                        menuInvoker.moveItemStackToInvoker(stackToMove, 9, 36, false)) {
+
+                    slot.setChanged();
+                    if (stackToMove.isEmpty()) {
+                        slot.setByPlayer(ItemStack.EMPTY);
+                    }
+                    cir.setReturnValue(ItemStack.EMPTY);
+                    return;
+                }
+            } else {
+                int combatHotbarEndIndex = combatHotbarStartIndex + handler.getSlots();
+
+                if (menuInvoker.moveItemStackToInvoker(stackToMove, combatHotbarStartIndex, combatHotbarEndIndex, false)) {
+                    slot.setChanged();
+                    if (stackToMove.isEmpty()) {
+                        slot.setByPlayer(ItemStack.EMPTY);
+                    }
                     cir.setReturnValue(ItemStack.EMPTY);
                     return;
                 }

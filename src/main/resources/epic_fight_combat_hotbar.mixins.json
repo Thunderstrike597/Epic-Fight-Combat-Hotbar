@@ -21,6 +21,7 @@
     "GuiAccessor",
     "GuiMixin",
     "AbstractContainerScreenMixin",
+    "InventoryScreenMixin",
     "GuiGraphicsMixin",
     "MinecraftKeyMixin"
   ],

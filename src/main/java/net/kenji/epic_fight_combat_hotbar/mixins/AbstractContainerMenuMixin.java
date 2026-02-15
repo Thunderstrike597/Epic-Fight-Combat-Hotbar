@@ -28,26 +28,35 @@ public abstract class AbstractContainerMenuMixin {
         if(pSlot.index < pSlot.container.getContainerSize() - 1) return;
         if(menu instanceof InventoryMenu) return;
         if (pSlot.container instanceof Inventory inventory) {
-            if (!hasCombatSlots(menu)) {
-                    addCombatHotbarSlots(menu, inventory.player);
+            if (!epicFight_CombatHotbar_Versions$hasCombatSlots(menu)) {
+                    epicFight_CombatHotbar_Versions$addCombatHotbarSlots(menu, inventory.player);
 
             }
         }
     }
     
     @Unique
-    private boolean hasCombatSlots(AbstractContainerMenu menu) {
+    private boolean epicFight_CombatHotbar_Versions$hasCombatSlots(AbstractContainerMenu menu) {
         // Check if any slot is a combat hotbar slot
         return menu.slots.stream().anyMatch(s -> s instanceof SlotItemHandler);
     }
     
     @Unique
-    private void addCombatHotbarSlots(AbstractContainerMenu menu, Player player) {
+    private void epicFight_CombatHotbar_Versions$addCombatHotbarSlots(AbstractContainerMenu menu, Player player) {
         AbstractContainerMenuInvoker invoker = (AbstractContainerMenuInvoker)(Object)this;
 
         player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
             int startX = -18;
-            int startY = 28;
+
+            Slot firstPlayerSlot = null;
+            for (Slot slot : menu.slots) {
+                if (slot.container instanceof Inventory) {
+                    firstPlayerSlot = slot;
+                    break;
+                }
+            }
+            if(firstPlayerSlot == null)return;
+            int startY = firstPlayerSlot.y + 1;
             
             for (int i = 0; i < CombatHotbarProvider.SLOTS; i++) {
                 invoker.epic_fight_combat_hotbar$addSlot(new SlotItemHandler(handler, i, startX, startY + (i * 18)));

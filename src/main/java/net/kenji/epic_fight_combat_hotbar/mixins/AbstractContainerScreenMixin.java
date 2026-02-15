@@ -4,8 +4,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,13 +39,24 @@ public abstract class AbstractContainerScreenMixin {
         if (player == null) return;
 
         AbstractContainerScreen<?> screen = (AbstractContainerScreen<?>) (Object) this;
+        if(screen instanceof InventoryScreen) return;
         if(screen instanceof CreativeModeInventoryScreen) return;
         int leftPos = ((InventoryScreenAccessor) screen).getLeftPos();
         int topPos = ((InventoryScreenAccessor) screen).getTopPos();
 
+        Slot firstPlayerSlot = null;
+        for (Slot slot : screen.getMenu().slots) {
+            if (slot.container instanceof Inventory) {
+                firstPlayerSlot = slot;
+                break;
+            }
+        }
+        if(firstPlayerSlot == null)return;
+
+
         // Match the slot positioning exactly
         int startX = -19;
-        int startY = 27;
+        int startY = firstPlayerSlot.y;
 
         // Draw slot backgrounds
         for (int i = 0; i < 4; i++) {
