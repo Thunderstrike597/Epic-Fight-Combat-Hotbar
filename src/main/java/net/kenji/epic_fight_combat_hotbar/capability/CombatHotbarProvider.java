@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.capabilities.item.WeaponCapability;
 
 public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
@@ -25,10 +26,10 @@ public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializab
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             CapabilityItem capItem = EpicFightCapabilities.getItemStackCapability(stack);
-            if(capItem != null){
-                return capItem.getWeaponCategory() != CapabilityItem.WeaponCategories.NOT_WEAPON && capItem.getWeaponCategory() != CapabilityItem.WeaponCategories.PICKAXE && capItem.getWeaponCategory() != CapabilityItem.WeaponCategories.HOE;
+            if(capItem instanceof WeaponCapability weaponCap){
+                return weaponCap.getWeaponCategory() != CapabilityItem.WeaponCategories.NOT_WEAPON && weaponCap.getWeaponCategory() != CapabilityItem.WeaponCategories.PICKAXE && weaponCap.getWeaponCategory() != CapabilityItem.WeaponCategories.HOE;
             }
-            return false;
+            return stack.getItem() instanceof ProjectileWeaponItem;
         }
         @Override
         public void setStackInSlot(int slot, @NotNull ItemStack stack) {

@@ -1,7 +1,7 @@
 package net.kenji.epic_fight_combat_hotbar.client;
 
-import de.maxhenkel.corpse.corelib.helpers.Pair;
 import net.kenji.epic_fight_combat_hotbar.EpicFightCombatHotbar;
+import net.kenji.epic_fight_combat_hotbar.api.Pair;
 import net.kenji.epic_fight_combat_hotbar.capability.CombatHotbarProvider;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -10,6 +10,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.spongepowered.tools.obfuscation.mapping.IMappingConsumer;
 
 import java.util.ArrayList;
 import java.util.List;
