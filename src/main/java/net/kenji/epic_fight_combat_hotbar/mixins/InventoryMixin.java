@@ -53,21 +53,11 @@ public class InventoryMixin {
 
         ItemStack stackToMove = slot.getItem();
 
-        // Only handle weapons
-        if (!(stackToMove.getItem() instanceof TieredItem) || stackToMove.getItem() instanceof Equipable || !(stackToMove.getItem() instanceof ProjectileWeaponItem)) {
-            if(EpicFightCapabilities.getItemStackCapability(stackToMove) == null) {
-                return;
-            }
-            CapabilityItem capItem = EpicFightCapabilities.getItemStackCapability(stackToMove);
-            if(capItem != null) {
-                if(capItem.getWeaponCategory() == CapabilityItem.WeaponCategories.NOT_WEAPON || capItem.getWeaponCategory() == CapabilityItem.WeaponCategories.PICKAXE || capItem.getWeaponCategory() == CapabilityItem.WeaponCategories.HOE || capItem.getWeaponCategory() == CapabilityItem.WeaponCategories.SHIELD){
-                    return;
-                }
-            }
-        }
-
         player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
             int combatHotbarStartIndex = -1;
+            if(!handler.isItemValid(0, stackToMove)){
+                return;
+            }
 
             // Find where combat hotbar slots start in the menu
             for (int i = 0; i < menu.slots.size(); i++) {

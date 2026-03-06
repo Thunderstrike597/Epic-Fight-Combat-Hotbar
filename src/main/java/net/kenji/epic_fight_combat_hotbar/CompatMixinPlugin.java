@@ -5,6 +5,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -15,18 +16,21 @@ public class CompatMixinPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+    public List<String> getMixins() {
+        List<String> mixins = new ArrayList<>();
 
-        // Example: only load this mixin if "othermod" is installed
-        if (mixinClassName.equals("net.kenji.epic_fight_combat_hotbar.mixins.compat.corpse.CorpseTransferItems")) {
-            return isLoaded("corpse");
+        if (isLoaded("corpse")) {
+            mixins.add("compat.corpse.CorpseTransferItemsMixin");
+            mixins.add("compat.corpse.CorpseInventoryContainerInvoker");
+            mixins.add("compat.corpse.CorpseContainerBaseAccessor");
         }
-        if (mixinClassName.equals("net.kenji.epic_fight_combat_hotbar.mixins.compat.corpse.CorpseInventoryContainerInvoker")) {
-            return isLoaded("corpse");
-        }
-        if (mixinClassName.equals("net.kenji.epic_fight_combat_hotbar.mixins.compat.corpse.CorpseContainerBaseAccessor")) {
-            return isLoaded("corpse");
-        }
+
+        return mixins;
+    }
+
+    @Override
+    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        // Can still use this as a safety check if needed
         return true;
     }
 
@@ -34,7 +38,6 @@ public class CompatMixinPlugin implements IMixinConfigPlugin {
     @Override public void onLoad(String mixinPackage) {}
     @Override public String getRefMapperConfig() { return null; }
     @Override public void acceptTargets(Set<String> a, Set<String> b) {}
-    @Override public List<String> getMixins() { return null; }
     @Override
     public void preApply(String s, ClassNode classNode, String s1, IMixinInfo iMixinInfo) {}
     @Override

@@ -10,11 +10,7 @@
     "InventoryMixin",
     "AbstractContainerMenuInvoker",
     "PlayerMixin",
-    "AbstractContainerMenuMixin",
-    "compat.corpse.CorpseTransferItemsMixin",
-    "compat.corpse.CorpseInventoryContainerInvoker",
-    "compat.corpse.CorpseContainerBaseAccessor"
-
+    "AbstractContainerMenuMixin"
   ],
   "client": [
     "InventoryScreenAccessor",

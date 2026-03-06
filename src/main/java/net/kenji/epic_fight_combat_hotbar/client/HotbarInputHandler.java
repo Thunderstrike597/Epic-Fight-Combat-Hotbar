@@ -1,10 +1,8 @@
 package net.kenji.epic_fight_combat_hotbar.client;
 
-import de.maxhenkel.corpse.corelib.helpers.Pair;
 import net.kenji.epic_fight_combat_hotbar.EpicFightCombatHotbar;
+import net.kenji.epic_fight_combat_hotbar.api.Pair;
 import net.kenji.epic_fight_combat_hotbar.capability.CombatHotbarProvider;
-import net.kenji.epic_fight_combat_hotbar.network.CombatHotbarPacketHandler;
-import net.kenji.epic_fight_combat_hotbar.network.HotbarSelectSlotPacket;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
