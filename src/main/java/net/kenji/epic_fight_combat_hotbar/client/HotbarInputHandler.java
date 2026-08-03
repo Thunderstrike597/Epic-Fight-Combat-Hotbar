@@ -42,40 +42,4 @@ public class HotbarInputHandler {
            }
        }
     }
-    
-    // Handle mouse scroll
-    @SubscribeEvent
-    public static void onMouseScroll(InputEvent.MouseScrollingEvent event) {
-        if (Minecraft.getInstance().player != null) {
-            if (!CombatModeHandler.isInBattleMode(Minecraft.getInstance().player)) {
-                return;
-            }
-
-            Minecraft mc = Minecraft.getInstance();
-            if (mc.player == null || mc.screen != null) {
-                return;
-            }
-
-            double scrollDelta = event.getScrollDelta();
-            int currentSlot = HotbarSlotHandler.getSelectedSlot(mc.player);
-
-            if (scrollDelta > 0) {
-                // Scroll up - previous slot
-                currentSlot--;
-                if (currentSlot < 0) currentSlot = 3;
-            } else if (scrollDelta < 0) {
-                // Scroll down - next slot
-                currentSlot++;
-                if (currentSlot > 3) currentSlot = 0;
-            }
-
-            HotbarSlotHandler.setSelectedSlotSynchronised(mc.player, currentSlot);
-
-            // Cancel the event so vanilla hotbar doesn't scroll
-            event.setCanceled(true);
-
-            // Sync to server
-            // NetworkHandler.sendToServer(new SetCombatSlotPacket(currentSlot));
-        }
-    }
 }
