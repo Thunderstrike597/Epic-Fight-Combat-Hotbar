@@ -1,5 +1,6 @@
 package net.kenji.epic_fight_combat_hotbar.mixins;
 
+import net.kenji.epic_fight_combat_hotbar.api.CombatHotbarHandler;
 import net.kenji.epic_fight_combat_hotbar.capability.CombatHotbarProvider;
 import net.kenji.epic_fight_combat_hotbar.capability.ModCapabilities;
 import net.minecraft.client.Minecraft;

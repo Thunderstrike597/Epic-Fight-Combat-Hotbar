@@ -1,11 +1,13 @@
 package net.kenji.epic_fight_combat_hotbar.capability;
 
+import net.kenji.epic_fight_combat_hotbar.api.CombatHotbarHandler;
+import net.kenji.epic_fight_combat_hotbar.client.HotbarSlotHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.Equipable;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
-import net.minecraft.world.item.TieredItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -17,12 +19,24 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    public static final int SLOTS = 4;
     public static final String COMBAT_HOTBAR_SLOT_ITEM_TAG = "combat_hotbar_slot_item";
+    public static final int SLOTS = 4;
 
-    private final ItemStackHandler inventory = new ItemStackHandler(SLOTS) {
+    public static CombatHotbarHandler getCombatHotbarCap(Player player){
+        AtomicReference<CombatHotbarHandler> handler = new AtomicReference<>();
+        player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler::set);
+        return handler.get();
+    }
+
+    private final CombatHotbarHandler inventory = new CombatHotbarHandler(SLOTS) {
+
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             CapabilityItem capItem = EpicFightCapabilities.getItemStackCapability(stack);
@@ -40,11 +54,20 @@ public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializab
         }
     };
 
-    private final LazyOptional<ItemStackHandler> optional = LazyOptional.of(() -> inventory);
+
+
+
+
+
+    private LazyOptional<ItemStackHandler> optional = LazyOptional.of(() -> inventory);
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ModCapabilities.COMBAT_HOTBAR) {
+            // Recreate if invalidated
+            if (!optional.isPresent()) {
+                optional = LazyOptional.of(() -> inventory);
+            }
             return optional.cast();
         }
         return LazyOptional.empty();
@@ -62,4 +85,5 @@ public class CombatHotbarProvider implements ICapabilityProvider, INBTSerializab
     public void invalidate() {
         optional.invalidate();
     }
+
 }

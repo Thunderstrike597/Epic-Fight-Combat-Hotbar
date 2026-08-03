@@ -11,16 +11,19 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jline.utils.Log;
 
 import java.util.*;
 
 @Mod.EventBusSubscriber(modid = EpicFightCombatHotbar.MODID)
 public class PlayerDeathHandler {
 
-    public static class PlayerDeathStorage{
-        public static Map<UUID, PlayerDeathStorage> playerDeathStorageMap = new HashMap<>();
-        public static PlayerDeathStorage get(Player player){
-            return playerDeathStorageMap.computeIfAbsent(player.getUUID(), k -> new PlayerDeathStorage());
+    public static class PlayerCombatHotbarStorage {
+        public static Map<UUID, PlayerCombatHotbarStorage> playerDeathStorageMap = new HashMap<>();
+        public static Map<UUID, PlayerCombatHotbarStorage> playerDimStorageMap = new HashMap<>();
+
+        public static PlayerCombatHotbarStorage get(Player player){
+            return playerDeathStorageMap.computeIfAbsent(player.getUUID(), k -> new PlayerCombatHotbarStorage());
         }
         List<ItemStack> stacks = new ArrayList<>(4);
     }
@@ -39,7 +42,7 @@ public class PlayerDeathHandler {
                 for(int i = 0; i < handler.getSlots(); i++){
                     storedStacks.add(handler.getStackInSlot(i));
                 }
-                PlayerDeathStorage.get(player).stacks = storedStacks;
+                PlayerCombatHotbarStorage.get(player).stacks = storedStacks;
                 return;
             }
 
@@ -72,10 +75,42 @@ public class PlayerDeathHandler {
         // If keepInventory is enabled, copy items over
         if (newPlayer.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             newPlayer.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
-                for (int i = 0; i < PlayerDeathStorage.get(newPlayer).stacks.size(); i++) {
-                    handler.setStackInSlot(i, PlayerDeathStorage.get(newPlayer).stacks.get(i));
+                for (int i = 0; i < PlayerCombatHotbarStorage.get(newPlayer).stacks.size(); i++) {
+                    handler.setStackInSlot(i, PlayerCombatHotbarStorage.get(newPlayer).stacks.get(i));
                 }
             });
         }
+    }
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+
+        if (event.isWasDeath()) return;
+
+        Player player = event.getOriginal();
+
+        player.reviveCaps();
+
+        player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
+            List<ItemStack> storedStacks = new ArrayList<>();
+            for(int i = 0; i < handler.getSlots(); i++){
+                storedStacks.add(handler.getStackInSlot(i));
+            }
+            PlayerCombatHotbarStorage.get(player).stacks = storedStacks;
+
+        });
+        player.invalidateCaps();
+    }
+    @SubscribeEvent
+    public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
+        Player player = event.getEntity();
+
+        if (player.level().isClientSide()) return;
+
+
+        player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent(handler -> {
+            for (int i = 0; i < PlayerCombatHotbarStorage.get(player).stacks.size(); i++) {
+                handler.setStackInSlot(i, PlayerCombatHotbarStorage.get(player).stacks.get(i));
+            }
+        });
     }
 }

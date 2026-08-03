@@ -1,6 +1,7 @@
 package net.kenji.epic_fight_combat_hotbar.capability.handlers;
 
 import net.kenji.epic_fight_combat_hotbar.EpicFightCombatHotbar;
+import net.kenji.epic_fight_combat_hotbar.api.CombatHotbarHandler;
 import net.kenji.epic_fight_combat_hotbar.capability.CombatHotbarProvider;
 import net.kenji.epic_fight_combat_hotbar.capability.ModCapabilities;
 import net.minecraft.world.entity.player.Player;

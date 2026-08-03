@@ -2,6 +2,7 @@ package net.kenji.epic_fight_combat_hotbar.mixins.compat.corpse;
 
 import de.maxhenkel.corpse.gui.CorpseInventoryContainer;
 import de.maxhenkel.corpse.gui.Guis;
+import net.kenji.epic_fight_combat_hotbar.api.CombatHotbarHandler;
 import net.kenji.epic_fight_combat_hotbar.capability.CombatHotbarProvider;
 import net.kenji.epic_fight_combat_hotbar.capability.ModCapabilities;
 import net.minecraft.core.NonNullList;
@@ -63,7 +64,8 @@ public class CorpseTransferItemsMixin {
                 }
 
                 // Process combat hotbar items with BACKUP
-                player.getCapability(ModCapabilities.COMBAT_HOTBAR).ifPresent((handler) -> {
+                CombatHotbarHandler handler = CombatHotbarProvider.getCombatHotbarCap(player);
+
                     for(ItemStack stack : combatHotbarItems) {
                         boolean placed = false;
 
@@ -87,7 +89,6 @@ public class CorpseTransferItemsMixin {
                             }
                         }
                     }
-                });
 
                 // FALLBACK: If capability didn't exist, add ALL combat items to regular inventory
                 if (!player.getCapability(ModCapabilities.COMBAT_HOTBAR).isPresent()) {

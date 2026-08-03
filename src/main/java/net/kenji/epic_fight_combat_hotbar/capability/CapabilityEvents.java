@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jline.utils.Log;
 
 @Mod.EventBusSubscriber(modid = "epic_fight_combat_hotbar")
 public class CapabilityEvents {
@@ -17,6 +18,7 @@ public class CapabilityEvents {
     @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
+
             CombatHotbarProvider provider = new CombatHotbarProvider();
             event.addCapability(COMBAT_HOTBAR_CAP, provider);
 

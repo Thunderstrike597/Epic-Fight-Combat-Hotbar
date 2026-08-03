@@ -8,9 +8,11 @@
   "refmap": "epic_fight_combat_hotbar.refmap.json",
   "mixins": [
     "InventoryMixin",
+    "InventoryMenuMixin",
     "AbstractContainerMenuInvoker",
     "PlayerMixin",
-    "AbstractContainerMenuMixin"
+    "AbstractContainerMenuMixin",
+    "LivingEntityMixin"
   ],
   "client": [
     "InventoryScreenAccessor",
